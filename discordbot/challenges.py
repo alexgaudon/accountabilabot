@@ -8,7 +8,7 @@ from datetime import datetime
 from apscheduler.triggers.cron import CronTrigger
 import pytz
 
-CHALLENGES_FILE = "challenges.json"
+CHALLENGES_FILE = "/app/data/challenges.json"
 
 def parse_time_with_timezone(time_str):
     """
