@@ -1,23 +1,19 @@
 import discord
-from discordbot.command_handler import CommandHandler
-from discordbot.commands import PingCommand, EchoCommand
+from discord.ext import commands
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from discordbot.commands import setup_commands
+from discordbot.challenges import setup_challenge_commands
 
-class DiscordBot(discord.Client):
+class DiscordBot(commands.Bot):
     def __init__(self):
         intents = discord.Intents.default()
-        intents.message_content = True
-        super().__init__(intents=intents)
-
-        self.command_handler = CommandHandler()
-        # Register example commands
-        self.command_handler.register(PingCommand())
-        self.command_handler.register(EchoCommand())
+        super().__init__(command_prefix="!", intents=intents)
+        self.scheduler = AsyncIOScheduler()
+        self.events = []
 
     async def on_ready(self):
         print(f'Logged in as {self.user}')
-
-    async def on_message(self, message):
-        if message.author.bot or message.author == self.user:
-            return
-
-        await self.command_handler.execute(message)
+        self.scheduler.start()
+        setup_commands(self)
+        setup_challenge_commands(self)
+        await self.tree.sync()

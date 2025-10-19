@@ -2,7 +2,7 @@
 name = "discordbot"
 version = "0.1.0"
 requires-python = ">=3.13"
-dependencies = ["discord.py", "pydantic", "pydantic-settings"]
+dependencies = ["discord.py", "pydantic", "pydantic-settings", "apscheduler", "pytz"]
 
 [dependency-groups]
 dev = ["ruff"]
